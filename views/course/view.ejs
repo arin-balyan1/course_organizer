@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+  <h1 class="text-primary"><%= course.course_name %></h1>
+  <p class="text-muted">
+    Credits: <%= course.credits %> | Branch: <%= course.branch %>
+  </p>
+  <p class="text-muted">
+    Professor: <strong><%= course.professor_name%>(<%= course.professor_email %>)</strong>
+  </p>
+
+  <hr>
+
+
+  <!-- Lectures Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="mb-0">Lectures</h3>
+    </div>
+    <div class="card-body">
+      <% if (course.lectures && course.lectures.length > 0) { %>
+        <ul class="list-group">
+          <% course.lectures.forEach(lecture => { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <strong>
+                <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>" class="text-decoration-none text-dark">
+                  <%= lecture.title %>
+                </a>
+              </strong>
+              <div>
+                <% if (lecture.pdf_url) { %>
+                  <a href="<%= lecture.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">View PDF</a>
+                <% } %>
+                <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>/delete" class="btn btn-sm btn-outline-danger">Delete</a>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p class="text-warning">No lectures available for this course.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Add Lecture Form -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="mb-0">Add Lecture</h3>
+    </div>
+    <div class="card-body">
+      <form action="/courses/<%= course.course_id %>/lectures" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <input type="text" name="title" class="form-control" placeholder="Lecture Title" required>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="description" class="form-control" placeholder="Lecture Description">
+        </div>
+        <div class="mb-3">
+          <input type="file" name="pdf" class="form-control" accept="application/pdf">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Lecture</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Assignments Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="mb-0">Assignments</h3>
+    </div>
+    <div class="card-body">
+      <% if (course.assignments && course.assignments.length > 0) { %>
+        <ul class="list-group">
+          <% course.assignments.forEach(assignment => { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <strong><%= assignment.title %></strong>
+              <div>
+                <% if (assignment.pdf_url) { %>
+                  <a href="<%= assignment.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">Download</a>
+                <% } %>
+                <a href="/courses/<%= course.course_id %>/assignments/<%= assignment._id %>/delete" class="btn btn-sm btn-outline-danger">Delete</a>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p class="text-warning">No assignments available for this course.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Add Assignment Form -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="mb-0">Add Assignment</h3>
+    </div>
+    <div class="card-body">
+      <form action="/courses/<%= course.course_id %>/assignments" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <input type="text" name="title" class="form-control" placeholder="Assignment Title" required>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="description" class="form-control" placeholder="Assignment Description">
+        </div>
+        <div class="mb-3">
+          <input type="file" name="pdf" class="form-control" accept="application/pdf">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Assignment</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

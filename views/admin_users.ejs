@@ -1,0 +1,44 @@
+<%- include('./partials/header') %>
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-primary">Manage Users</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.username %></td>
+                        <td>
+                            <span class="badge <%= user.role === 'admin' ? 'bg-danger' : 'bg-secondary' %>">
+                                <%= user.role %>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <% if (user.role === "user") { %>
+                                    <form action="/admin/make-admin/<%= user._id %>" method="POST">
+                                        <button type="submit" class="btn btn-sm btn-success">Make Admin</button>
+                                    </form>
+                                <% } %>
+                                <% if (user.role === "admin" && users.filter(u => u.role === "admin").length > 1) { %>
+                                    <form action="/admin/delete-admin/<%= user._id %>" method="POST">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete Admin</button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%- include('./partials/footer') %>
