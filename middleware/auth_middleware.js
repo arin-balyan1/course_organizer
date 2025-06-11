@@ -1,4 +1,6 @@
-module.exports.isAuthenticated = (req, res, next) => {
+//arin-balyan1
+module.exports.isAuthenticated = (req, res, next) => { 
+
     if (req.isAuthenticated()) {
         return next();
     }
